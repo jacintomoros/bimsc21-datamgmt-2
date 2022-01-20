@@ -19,7 +19,7 @@ function init() {
     scene = new THREE.Scene()
     scene.background = new THREE.Color(1,1,1)
     camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 1000 )
-    camera.position.z = 100
+    camera.position.z = 10
 
     // create the renderer and add it to the html
     renderer = new THREE.WebGLRenderer( { antialias: true } )
@@ -67,7 +67,7 @@ function init() {
     
     // or, load cube map
     cubeMap = new THREE.CubeTextureLoader()
-        .setPath('textures/cube/earth/')
+        .setPath('textures/cube/redsp/')
         .load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] )
     
     scene.background = cubeMap
@@ -78,7 +78,7 @@ function init() {
     const loader = new Rhino3dmLoader()
     loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
 
-    loader.load( 'sphere.3dm', function ( object ) {
+    loader.load( 'spaceship2.3dm', function ( object ) {
 
         document.getElementById('loader').remove()
         scene.add( object )
