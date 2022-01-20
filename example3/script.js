@@ -13,13 +13,13 @@ animate()
 
 function init() {
 
-    THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
+    //THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
 
     // create a scene and a camera
     scene = new THREE.Scene()
     scene.background = new THREE.Color(1,1,1)
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 )
-    camera.position.y = - 100
+    camera = new THREE.PerspectiveCamera( 1000, window.innerWidth / window.innerHeight, 0.1, 1000 )
+    camera.position.z = 100
 
     // create the renderer and add it to the html
     renderer = new THREE.WebGLRenderer( { antialias: true } )
@@ -43,13 +43,13 @@ function init() {
 
     // load a pbr material
     const tl = new THREE.TextureLoader()
-    tl.setPath('materials/PBR/streaked-metal1/')
+   // tl.setPath('materials/PBR/streaked-metal1/')
     material = new THREE.MeshPhysicalMaterial()
     material.map          = tl.load('streaked-metal1_base.png')
     material.aoMmap       = tl.load('streaked-metal1_ao.png')
     material.normalMap    = tl.load('streaked-metal1_normal.png')
     material.metalnessMap = tl.load('streaked-metal1_metallic.png')
-    material.metalness = 0.2
+    material.metalness = 0.0
     material.roughness = 0.0
 
     // or create a material
@@ -67,7 +67,7 @@ function init() {
     
     // or, load cube map
     cubeMap = new THREE.CubeTextureLoader()
-        .setPath('textures/cube/Bridge2/')
+        .setPath('textures/cube/orplanet/')
         .load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] )
     
     scene.background = cubeMap
