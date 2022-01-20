@@ -2,6 +2,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124.0/build/three.module.js'
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/controls/OrbitControls.js'
 import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/3DMLoader.js'
+import { HDRCubeTextureLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/HDRCubeTextureLoader.js';
 
 let camera, scene, raycaster, renderer
 const mouse = new THREE.Vector2()
@@ -34,6 +35,45 @@ function init() {
     scene.add( directionalLight )
 
     raycaster = new THREE.Raycaster()
+
+        //////////////////////////////////////////////
+    // load materials and cube maps
+
+    let material, cubeMap
+
+    // load a pbr material
+    const tl = new THREE.TextureLoader()
+    tl.setPath('materials/PBR/streaked-metal1/')
+    material = new THREE.MeshPhysicalMaterial()
+    material.map          = tl.load('streaked-metal1_base.png')
+    material.aoMmap       = tl.load('streaked-metal1_ao.png')
+    material.normalMap    = tl.load('streaked-metal1_normal.png')
+    material.metalnessMap = tl.load('streaked-metal1_metallic.png')
+    material.metalness = 0.2
+    material.roughness = 0.0
+
+    // or create a material
+    // material = new THREE.MeshStandardMaterial( {
+    //     color: 0xffffff,
+    //     metalness: 0.0,
+    //     roughness: 0.0
+    // } )
+
+    // load hdr cube map
+    // cubeMap = new HDRCubeTextureLoader()
+    //     .setPath( './textures/cube/pisaHDR/' )
+    //     .setDataType( THREE.UnsignedByteType )
+    //     .load( [ 'px.hdr', 'nx.hdr', 'py.hdr', 'ny.hdr', 'pz.hdr', 'nz.hdr' ] )
+    
+    // or, load cube map
+    cubeMap = new THREE.CubeTextureLoader()
+        .setPath('textures/cube/Bridge2/')
+        .load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] )
+    
+    scene.background = cubeMap
+    material.envMap = scene.background
+
+    //////////////////////////////////////////////
 
     const loader = new Rhino3dmLoader()
     loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
