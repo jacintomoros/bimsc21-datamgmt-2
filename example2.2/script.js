@@ -13,15 +13,7 @@ loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
 // call functions
 init()
 
-// load multiple models
-// create an array of model names
-const models = ['Rhino_Logo.3dm', 'what.3dm']
-
-for ( let i = 0; i < models.length; i ++ ) {
-
-    load( models[ i ] )
-
-}
+load ( model ) {
 
 // hide spinner
 document.getElementById('loader').remove()
