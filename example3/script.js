@@ -3,8 +3,9 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124.0/build/three.m
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/controls/OrbitControls.js'
 import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/3DMLoader.js'
 import { HDRCubeTextureLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/HDRCubeTextureLoader.js';
+import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/libs/dat.gui.module.js';
 
-let camera, scene, raycaster, renderer
+let camera, scene, raycaster, renderer, gui
 const mouse = new THREE.Vector2()
 window.addEventListener( 'click', onClick, false);
 
@@ -17,7 +18,7 @@ init()
 
 // load multiple models
 // create an array of model names
-const models = ['01.shell.3dm', '01.tubes.3dm', '01.structure.3dm']
+const models = ['spaceship.3dm']
 
 for ( let i = 0; i < models.length; i ++ ) {
 
@@ -98,6 +99,7 @@ function load ( model ) {
              roughness: 0.0,
              
          } )
+
         material.envMap = scene.background
 
         loader.load( model, function ( object ) {
@@ -113,6 +115,7 @@ function load ( model ) {
 
         scene.add( object )
         console.log( object )
+        initGUI( object.userData.layers );
 
     } )
 
@@ -187,9 +190,68 @@ function onClick( event ) {
 function animate() {
 
     requestAnimationFrame( animate )
-    renderer.render( scene, camera );
-    //object.rotation.y += 0.01;
+  //  torus.rotation.x += 0.01
+    //torus.rotation.y += 0.01
+    renderer.render( scene, camera )
+    
+
 
 }
 
-animate()
+function initGUI( layers ) {
+
+    gui = new GUI( { title: 'layers' } );
+
+    for ( let i = 0; i < layers.length; i ++ ) {
+
+        const layer = layers[ i ];
+        gui.add( layer, 'visible' ).name( layer.name ).onChange( function ( val ) {
+
+            const name = this.object.name;
+
+            scene.traverse( function ( child ) {
+
+                if ( child.userData.hasOwnProperty( 'attributes' ) ) {
+
+                    if ( 'layerIndex' in child.userData.attributes ) {
+
+                        const layerName = layers[ child.userData.attributes.layerIndex ].name;
+
+                        if ( layerName === name ) {
+
+                            child.visible = val;
+                            layer.visible = val;
+
+                        }
+
+                    }
+
+                }
+
+            } );
+
+        } );
+
+    }
+
+}
+
+// Create an object and add it to the scene:
+
+// 1. Create the geometry:
+const geometry = new THREE.TorusGeometry( 25, 1, 100, 100, 50 )
+
+// 2. Create the material:
+const     material = new THREE.MeshStandardMaterial( {
+          color: 0xffffff,
+           metalness: 1.0,
+          roughness: 0.0,
+    
+} )
+
+// 3. Create the object
+const torus = new THREE.Mesh( geometry, material )
+torus.rotateZ(-1 * Math.PI)
+
+// 4. Add it to the scene
+//scene.add( torus )
