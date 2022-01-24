@@ -235,23 +235,3 @@ function initGUI( layers ) {
     }
 
 }
-
-// Create an object and add it to the scene:
-
-// 1. Create the geometry:
-const geometry = new THREE.TorusGeometry( 25, 1, 100, 100, 50 )
-
-// 2. Create the material:
-const     material = new THREE.MeshStandardMaterial( {
-          color: 0xffffff,
-           metalness: 1.0,
-          roughness: 0.0,
-    
-} )
-
-// 3. Create the object
-const torus = new THREE.Mesh( geometry, material )
-torus.rotateZ(-1 * Math.PI)
-
-// 4. Add it to the scene
-//scene.add( torus )
