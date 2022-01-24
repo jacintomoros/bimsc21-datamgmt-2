@@ -116,6 +116,14 @@ function load ( model ) {
         scene.add( object )
         console.log( object )
         initGUI( object.userData.layers );
+        const animategeometry = () => {
+
+            requestAnimationFrame (animategeometry)
+            object.rotation.x += 0.01;
+            object.rotation.y += 0.01;
+            renderer.render(scene,camera)
+        }
+        animategeometry()
 
     } )
 
@@ -187,16 +195,7 @@ function onClick( event ) {
 
 }
 
-function animate() {
 
-    requestAnimationFrame( animate )
-  //  torus.rotation.x += 0.01
-    //torus.rotation.y += 0.01
-    renderer.render( scene, camera )
-    
-
-
-}
 
 function initGUI( layers ) {
 
