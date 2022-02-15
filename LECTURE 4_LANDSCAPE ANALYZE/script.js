@@ -208,6 +208,20 @@ function init() {
  const ambientLight = new THREE.AmbientLight();
  scene.add(ambientLight);
 
+ let cubeMap
+ // load hdr cube map
+ // cubeMap = new HDRCubeTextureLoader()
+ //     .setPath( './textures/cube/pisaHDR/' )
+ //     .setDataType( THREE.UnsignedByteType )
+ //     .load( [ 'px.hdr', 'nx.hdr', 'py.hdr', 'ny.hdr', 'pz.hdr', 'nz.hdr' ] )
+ 
+ // or, load cube map
+ cubeMap = new THREE.CubeTextureLoader()
+     .setPath('cube/orplanet/')
+     .load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] )
+ 
+ scene.background = cubeMap
+
  animate();
 }
 
